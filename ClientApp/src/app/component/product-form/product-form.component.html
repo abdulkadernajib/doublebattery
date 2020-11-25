@@ -1,0 +1,162 @@
+<h4 *ngIf="product.id">SKU {{product.sku}}</h4>
+<h4 *ngIf="!(product.id)">New Product {{product.sku}}</h4>
+<p>{{product|json}}</p>
+<form #f="ngForm" (ngSubmit)="submit()" >
+    <div class="form-group row" >
+        <label class="col-2" for="brand">Brand</label>
+        <select class="form-control col-4" name="brand" id="brand" (change)="onBrandChange()" [(ngModel)]="product.brandId" required #brand="ngModel">
+            <option value="br" selected></option>
+            <option *ngFor="let b of brands" value="{{b.id}}">{{b.name}}</option>
+        </select>
+        <label class="col-2" for="modelId">Model</label>
+        <select class="form-control col-4" name="modelId" id="modelId" [(ngModel)]="product.modelId" #model="ngModel" required (change)="onModelChange()">
+            <option value="md" selected></option>
+            <option *ngFor="let m of models" [value]="m.id">{{ m.brandModelId }}</option>
+        </select>
+    </div>
+    <div class="alert alert-danger" *ngIf="brand.touched && brand.invalid">Please specify the Brand</div>
+    <div class="alert alert-danger" *ngIf="model.touched && model.invalid">Please specify the Model</div>
+     
+     <p>If the model does not exist, add new <a [routerLink]="['/products/new-model']">model</a></p>
+    <div class="form-group row" >
+        <label class="col-2" for="categoryId">Category</label>
+        <select class="form-control col" name="categoryId" id="categoryId" [(ngModel)]="product.categoryId">
+            <option value=""></option>
+            <option *ngFor="let x of categories" value="{{x.id}}">{{x.name}}</option>
+        </select>
+    </div>
+    <div class="form-group row" >
+        <label class="col-2" for="frameTypeId">Frame Type</label>
+        <select class="form-control col" name="frameTypeId" id="frameTypeId" [(ngModel)]="product.frameId">
+            <option value=""></option>
+            <option *ngFor="let x of frameTypes" value="{{x.id}}">{{x.name}}</option>
+        </select>
+    </div>
+    <div class="form-group row" >
+        <label class="col-2" for="styleId">Style</label>
+        <select class="form-control col" name="styleId" id="styleId" [(ngModel)]="product.styleId">
+            <option value=""></option>
+            <option *ngFor="let x of styles" value="{{x.id}}">{{x.name}}</option>
+        </select>
+    </div>
+    
+    <div class="form-group row" >
+        <label for="idealForId" class="col-2">Ideal For</label>
+        <select class="form-control col" name="idealForId" id="idealForId" [(ngModel)]="product.idealForId">
+            <option value=""></option>
+            <option *ngFor="let x of idealFor" value="{{x.id}}">{{x.name}}</option>
+        </select>
+    </div>
+
+    <div>
+        <h6>Color Details</h6>
+        <div class="form-group row">
+            <label for="brandColorName" class="col-2">Brand Color Name</label>
+            <input id="brandColorName" name= "brandColorname" type="text" class="form-control col" [(ngModel)]="product.brandColorName" #brandColorName="ngModel">
+        </div>
+        <div class="form-group row" >
+            <label for="frameColorId" class="col-2">Frame Color</label>
+            <select class="form-control col" name="frameColorID" id="frameColorID" [(ngModel)]="product.frameColorId"> 
+                <option value=""></option>
+                <option *ngFor="let c of colors" value="{{c.id}}">{{c.name}}</option>
+            </select>
+        </div>
+        <div class="form-group row" >
+            <label for="templeColorId" class="col-2">Temple Color</label>
+            <select class="form-control col" name="templeColorId" id="templeColorId" [(ngModel)]="product.templeColorId">
+                <option value=""></option>
+                <option *ngFor="let c of colors" value="{{c.id}}">{{c.name}}</option>
+            </select>
+        </div>
+        <div class="form-group row" >
+            <label for="lensColorId" class="col-2">Lens Color</label>
+            <select class="form-control col" name="lensColorId" id="lensColorId" [(ngModel)]="product.lensColorId">
+                <option value=""></option>
+                <option *ngFor="let x of lensColors" value="{{x.id}}">{{x.name}}</option>
+            </select>
+        </div>
+    </div>
+   
+    <div>
+        <h6>Size Details</h6>
+        <div class="form-group row">
+            <label for="brandSizeName" class="col-2">Brand Size Name</label>
+            <input id="brandSizeName" name="brandSizeName" type="text" class="form-control col" [(ngModel)]="product.brandSizeName" #brandSizeName="ngModel">
+        </div>
+        <div class="form-group row" >
+            <label for="sizeId" class="col-2">Size</label>
+            <select class="form-control col" name="sizeId" id="sizeId" [(ngModel)]="product.sizeId">
+                <option value=""></option>
+                <option *ngFor="let x of sizes" value="{{x.id}}">{{x.name}}</option>
+            </select>
+        </div>
+
+        <div class="row form-group">
+        <label for="lensWidth" class="col-2">Lens Width</label>
+        <input type="number" id="lensWidth" name="lensWidth" class="col-1 form-control" [(ngModel)]="product.lensWidth">
+        
+        <label for="lensHeight" class="col-2">Lens Height</label>
+        <input type="number" id="lensHeight" name="lensHeight" class="col-1 form-control" [(ngModel)]="product.lensHeight">
+        
+        <label for="bridgeSize" class="col-2">Bridge Size</label>
+        <input type="number" id="bridgeSize" name="bridgeSize" class="col-1 form-control" [(ngModel)]="product.bridgeSize">
+       
+        <label for="templeLength" class="col-2">Temple Length</label>
+        <input type="number" id="templeLength" name="templeLength" class="col-1 form-control" [(ngModel)]="product.templeLength">
+        </div>
+        
+    </div>
+
+    <div>
+        <h6>Variation Details</h6>
+        
+        <div class="row form-group">
+                <label class="col-2" for="colorChildName">Color</label>
+                <input id="colorChildName" name="colorChildName" type="text" class="form-control col-4" [(ngModel)]="product.colorChildName" value="{{brandColorName.value}}">        
+                <label class="col-2" for="colorChildId">Id</label>
+                <select class="form-control col-4" (change)="onColorChildIdChange()" name="colorChildId" id="colorChildId" [(ngModel)]="product.colorChildId">
+                    <option value=""></option>
+                    <option *ngFor="let x of colorChildIds" value="{{x.id}}">{{x.name}}</option>
+                </select>
+        </div>
+
+        <div class="form-group row">
+            <label for="sizeChildName" class="col-2">Size</label>
+            <input id="sizeChildName" name="sizeChildName" type="text" class="form-control col-4" [(ngModel)]="product.sizeChildName" value="{{brandSizeName.value}}">
+
+            <label class="col-2" for="sizeChildId">Id</label>
+                <select class="form-control col-4" (change)="onSizeChildIdChange()" name="sizeChildId" id="sizeChildId" [(ngModel)]="product.sizeChildId">
+                    <option value=""></option>
+                    <option *ngFor="let x of sizeChildIds" value="{{x.id}}">{{x.name}}</option>
+                </select>
+        </div>
+    </div>  
+ 
+    <div>
+        <h6>Material Details</h6>
+        <div class="form-group row" >
+            <label for="frameMaterialId" class="col-2">Frame Material</label>
+            <select class="form-control col" name="frameMaterialId" id="frameMaterialId" [(ngModel)]="product.frameMaterialId" >
+                <option value=""></option>
+                <option *ngFor="let m of frameMaterials" value="{{m.id}}">{{m.name}}</option>
+            </select>
+        </div>
+        <div class="form-group row" >
+            <label class="col-2" for="templeMaterialId">Temple Material</label>
+            <select class="form-control col" name="templeMaterialId" id="templeMaterialId" [(ngModel)]="product.templeMaterialId">
+                <option value=""></option>
+                <option *ngFor="let m of frameMaterials" value="{{m.id}}">{{m.name}}</option>
+            </select>
+        </div>
+        <div class="form-group row" >
+            <label for="lensMaterialId" class="col-2">Lens Material</label>
+            <select class="form-control col" name="lensMaterialId" id="lensMaterialId" [(ngModel)]="product.lensMaterialId">
+                <option value=""></option>
+                <option *ngFor="let x of lensMaterials" value="{{x.id}}">{{x.name}}</option>
+            </select>
+        </div>
+    </div>
+     
+    <button class="btn btn-primary" [disabled]=f.invalid>Save</button>
+    <button *ngIf="product.id" class="btn btn-danger" type="button" (click)="delete()" >Delete</button>
+</form>  
