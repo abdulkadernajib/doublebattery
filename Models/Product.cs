@@ -14,63 +14,53 @@ namespace doublebattery.Models
         public string Sku { get; set; }
 
         public Model Model { get; set; }
+        [Required]
         public int ModelId { get; set; } //Done
 
         [Required]
-        public string ColorChildName { get; set; } //Done
-
-        public ColorChildId ColorChildId { get; set; }
-
-        public SizeChildId SizeChildId { get; set; }
+        public string ColorChildId { get; set; }
 
         [Required]
-        public string SizeChildName { get; set; } //Done
+        public string SizeChildId { get; set; }
 
         [Required]
         public string BrandColorName { get; set; } //Done
 
         [Required]
-        public Color FrameColor { get; set; } //Done
-
-        [Required]
-        public int FrameColorId { get; set; } //Done
-
-        [Required]
-        public int TempleColorId { get; set; } //Done
-
-        [Required]
-        public LensColor LensColor { get; set; } //Done
-
-        [Required]
         public string BrandSizeName { get; set; } //Done
 
-        [Required]
+        public Color FrameColor { get; set; } //Done
+        public int FrameColorId { get; set; } //Done
+        public int TempleColorId { get; set; } //Done
+
+        public LensColor LensColor { get; set; } //Done
+        public int LensColorId { get; set; } //Done
+
         public Size Size { get; set; }
+        public int SizeId { get; set; }
 
-        [Required]
         public FrameMaterial FrameMaterial { get; set; }
-
-        [Required]
         public int FrameMaterialId { get; set; } //Done
-
-        [Required]
         public int TempleMaterialId { get; set; } //Done
 
-        [Required]
         public LensMaterial LensMaterial { get; set; } //Done
+        public int LensMaterialId { get; set; } //Done
 
-        [Required]
         public IdealFor IdealFor { get; set; } //Done
-
         [Required]
+        public int IdealForId { get; set; } //Done
+
         public Category Category { get; set; } //Done
-
         [Required]
+        public int CategoryId { get; set; } //Done
+
         public Style Style { get; set; } //Done
+        public int StyleId { get; set; } //Done
 
-        [Required]
         public FrameType FrameType { get; set; }  //Done
+        public int FrameTypeId { get; set; }  //Done
 
+        public DateTime CreatedOn { get; set; }
         public DateTime LastUpdate { get; set; }
 
         public int LensWidth { get; set; }

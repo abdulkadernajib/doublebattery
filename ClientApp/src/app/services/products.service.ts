@@ -1,3 +1,4 @@
+import { Product } from './../model/product';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -10,7 +11,7 @@ export class ProductsService {
   constructor(private httpClient: HttpClient, private http: HttpClientModule) { }
 
   create(product) {
-    return this.httpClient.post("/api/products", product, { responseType: 'json' });
+    return this.httpClient.post("/api/products", product);
   }
 
   getProduct(id) {
@@ -19,6 +20,10 @@ export class ProductsService {
 
   deleteProduct(id) {
     return this.httpClient.delete('/api/products/' + id);
+  }
+
+  updateProduct(id, product) {
+    return this.httpClient.put('/api/products/' + id, product);
   }
 
 
@@ -58,12 +63,6 @@ export class ProductsService {
     return this.httpClient.get("/api/frameTypes");
   }
 
-  getColorChildIds() {
-    return this.httpClient.get("/api/colorChildId");
-  }
 
-  getSizeChildIds() {
-    return this.httpClient.get("/api/sizeChildId");
-  }
 
 }

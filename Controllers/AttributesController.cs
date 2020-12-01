@@ -72,18 +72,7 @@ public class AttributesController : Controller
         return await context.Sizes.ToListAsync();
 
     }
-    [HttpGet("/api/colorChildId")]
-    public async Task<IEnumerable<ColorChildId>> GetColorChildId()
-    {
-        return await context.ColorChildIds.ToListAsync();
 
-    }
-    [HttpGet("/api/sizeChildId")]
-    public async Task<IEnumerable<SizeChildId>> GetSizeChildId()
-    {
-        return await context.SizeChildIds.ToListAsync();
-
-    }
 
 
 

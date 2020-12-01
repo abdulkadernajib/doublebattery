@@ -194,23 +194,6 @@ namespace doublebattery.Migrations
                     b.ToTable("Colors");
                 });
 
-            modelBuilder.Entity("doublebattery.Models.ColorChild", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ColorChildren");
-                });
-
             modelBuilder.Entity("doublebattery.Models.Model", b =>
                 {
                     b.Property<int>("Id")
@@ -262,12 +245,12 @@ namespace doublebattery.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ColorChildIdId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColorChildName")
+                    b.Property<string>("ColorChildId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FrameColorId")
                         .HasColumnType("int");
@@ -299,10 +282,7 @@ namespace doublebattery.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SizeChildIdId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SizeChildName")
+                    b.Property<string>("SizeChildId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -330,8 +310,6 @@ namespace doublebattery.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ColorChildIdId");
-
                     b.HasIndex("FrameColorId");
 
                     b.HasIndex("FrameMaterialId");
@@ -346,30 +324,11 @@ namespace doublebattery.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.HasIndex("SizeChildIdId");
-
                     b.HasIndex("SizeId");
 
                     b.HasIndex("StyleId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("doublebattery.Models.SizeChild", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SizeChildren");
                 });
 
             modelBuilder.Entity("doublebattery.Models.Model", b =>
@@ -386,12 +345,6 @@ namespace doublebattery.Migrations
                     b.HasOne("doublebattery.Models.Category", "Category")
                         .WithMany("Product")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("doublebattery.Models.ColorChild", "ColorChildId")
-                        .WithMany("Product")
-                        .HasForeignKey("ColorChildIdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -434,12 +387,6 @@ namespace doublebattery.Migrations
                     b.HasOne("doublebattery.Models.Model", "Model")
                         .WithMany()
                         .HasForeignKey("ModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("doublebattery.Models.SizeChild", "SizeChildId")
-                        .WithMany("Product")
-                        .HasForeignKey("SizeChildIdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

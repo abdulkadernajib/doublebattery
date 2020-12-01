@@ -4,6 +4,7 @@ using AutoMapper;
 using doublebattery.Models;
 using doublebattery.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace doublebattery.Controllers.Resources
 {
@@ -25,6 +26,7 @@ namespace doublebattery.Controllers.Resources
                 return BadRequest(ModelState);
 
             var product = mapper.Map<SaveProductResource, Product>(productResource);
+            product.CreatedOn = DateTime.Now;
             product.LastUpdate = DateTime.Now;
 
 
@@ -70,13 +72,34 @@ namespace doublebattery.Controllers.Resources
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            var product = await context.Product.FindAsync(id);
+            var product = await context.Product
+            .Include(p => p.Model)
+            .ThenInclude(m => m.Brand)
+            .Include(p => p.Category)
+            .Include(p => p.FrameMaterial)
+            .Include(p => p.FrameColor)
+            .Include(p => p.LensColor)
+            .Include(p => p.LensMaterial)
+            .Include(p => p.Style)
+            .Include(p => p.FrameType)
+            .Include(p => p.IdealFor)
+            .Include(p => p.Size)
+            .SingleOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
                 return NotFound();
 
-            var productResource = mapper.Map<Product, SaveProductResource>(product);
+            var productResource = mapper.Map<Product, ProductsResource>(product);
             return Ok(productResource);
         }
+
+        //  [HttpGet("{id}")]
+        // public async Task<IActionResult> GetProductByModel(int id)
+        // {
+        // var product = await context.Product.Include(p => p.Model).ToListAsync(id)
+
+
+
     }
+}
 }

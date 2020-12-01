@@ -20,7 +20,5 @@ namespace doublebattery.Persistence
         public DbSet<FrameType> FrameTypes { get; set; }
         public DbSet<IdealFor> IdealFor { get; set; }
         public DbSet<Size> Sizes { get; set; }
-        public DbSet<ColorChildId> ColorChildIds { get; set; }
-        public DbSet<SizeChildId> SizeChildIds { get; set; }
     }
 }

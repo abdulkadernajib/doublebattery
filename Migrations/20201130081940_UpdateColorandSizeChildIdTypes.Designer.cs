@@ -10,8 +10,8 @@ using doublebattery.Persistence;
 namespace doublebattery.Migrations
 {
     [DbContext(typeof(DoubleBatteryDbContext))]
-    [Migration("20201117113114_FrameDimensions")]
-    partial class FrameDimensions
+    [Migration("20201130081940_UpdateColorandSizeChildIdTypes")]
+    partial class UpdateColorandSizeChildIdTypes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -196,23 +196,6 @@ namespace doublebattery.Migrations
                     b.ToTable("Colors");
                 });
 
-            modelBuilder.Entity("doublebattery.Models.ColorChildId", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ColorChildIds");
-                });
-
             modelBuilder.Entity("doublebattery.Models.Model", b =>
                 {
                     b.Property<int>("Id")
@@ -264,12 +247,12 @@ namespace doublebattery.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ColorChildIdId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColorChildName")
+                    b.Property<string>("ColorChildId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FrameColorId")
                         .HasColumnType("int");
@@ -277,7 +260,7 @@ namespace doublebattery.Migrations
                     b.Property<int>("FrameMaterialId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FrameTypeId")
+                    b.Property<int?>("FrameTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("IdealForId")
@@ -286,13 +269,13 @@ namespace doublebattery.Migrations
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LensColorId")
+                    b.Property<int?>("LensColorId")
                         .HasColumnType("int");
 
                     b.Property<int>("LensHeight")
                         .HasColumnType("int");
 
-                    b.Property<int>("LensMaterialId")
+                    b.Property<int?>("LensMaterialId")
                         .HasColumnType("int");
 
                     b.Property<int>("LensWidth")
@@ -301,14 +284,11 @@ namespace doublebattery.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SizeChildIdId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SizeChildName")
+                    b.Property<string>("SizeChildId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SizeId")
+                    b.Property<int?>("SizeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Sku")
@@ -316,7 +296,7 @@ namespace doublebattery.Migrations
                         .HasColumnType("nvarchar(11)")
                         .HasMaxLength(11);
 
-                    b.Property<int>("StyleId")
+                    b.Property<int?>("StyleId")
                         .HasColumnType("int");
 
                     b.Property<int>("TempleColorId")
@@ -332,8 +312,6 @@ namespace doublebattery.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ColorChildIdId");
-
                     b.HasIndex("FrameColorId");
 
                     b.HasIndex("FrameMaterialId");
@@ -348,30 +326,11 @@ namespace doublebattery.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.HasIndex("SizeChildIdId");
-
                     b.HasIndex("SizeId");
 
                     b.HasIndex("StyleId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("doublebattery.Models.SizeChildId", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SizeChildIds");
                 });
 
             modelBuilder.Entity("doublebattery.Models.Model", b =>
@@ -391,12 +350,6 @@ namespace doublebattery.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("doublebattery.Models.ColorChildId", "ColorChildId")
-                        .WithMany("Product")
-                        .HasForeignKey("ColorChildIdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("doublebattery.Models.Color", "FrameColor")
                         .WithMany("Product")
                         .HasForeignKey("FrameColorId")
@@ -411,9 +364,7 @@ namespace doublebattery.Migrations
 
                     b.HasOne("FrameType", "FrameType")
                         .WithMany("Product")
-                        .HasForeignKey("FrameTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FrameTypeId");
 
                     b.HasOne("IdealFor", "IdealFor")
                         .WithMany("Product")
@@ -423,15 +374,11 @@ namespace doublebattery.Migrations
 
                     b.HasOne("LensColor", "LensColor")
                         .WithMany("Product")
-                        .HasForeignKey("LensColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LensColorId");
 
                     b.HasOne("LensMaterial", "LensMaterial")
                         .WithMany("Product")
-                        .HasForeignKey("LensMaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LensMaterialId");
 
                     b.HasOne("doublebattery.Models.Model", "Model")
                         .WithMany()
@@ -439,23 +386,13 @@ namespace doublebattery.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("doublebattery.Models.SizeChildId", "SizeChildId")
-                        .WithMany("Product")
-                        .HasForeignKey("SizeChildIdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Size", "Size")
                         .WithMany("Product")
-                        .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SizeId");
 
                     b.HasOne("Style", "Style")
                         .WithMany("Product")
-                        .HasForeignKey("StyleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StyleId");
                 });
 #pragma warning restore 612, 618
         }

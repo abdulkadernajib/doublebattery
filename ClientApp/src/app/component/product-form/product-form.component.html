@@ -1,5 +1,5 @@
-<h4 *ngIf="product.id">SKU {{product.sku}}</h4>
-<h4 *ngIf="!(product.id)">New Product {{product.sku}}</h4>
+<h4 *ngIf="product.id">SKU: {{product.sku}}</h4>
+<h4 *ngIf="!(product.id)">Add New Product | {{product.sku }}</h4>
 <p>{{product|json}}</p>
 <form #f="ngForm" (ngSubmit)="submit()" >
     <div class="form-group row" >
@@ -11,7 +11,7 @@
         <label class="col-2" for="modelId">Model</label>
         <select class="form-control col-4" name="modelId" id="modelId" [(ngModel)]="product.modelId" #model="ngModel" required (change)="onModelChange()">
             <option value="md" selected></option>
-            <option *ngFor="let m of models" [value]="m.id">{{ m.brandModelId }}</option>
+            <option *ngFor="let m of models" value={{m.id}}>{{ m.brandModelId }}</option>
         </select>
     </div>
     <div class="alert alert-danger" *ngIf="brand.touched && brand.invalid">Please specify the Brand</div>
@@ -25,9 +25,41 @@
             <option *ngFor="let x of categories" value="{{x.id}}">{{x.name}}</option>
         </select>
     </div>
+    <div>
+        <h6>Variation Details</h6>
+        <div class="form-group row">
+            <label for="brandColorSelect" class="col-2">Brand Color Name</label>
+            <select name="brandColorSelect" id="brandColorSelect"  #brandColorSelect="ngModel" [(ngModel)]="brandColorSelectName" class="form-control col">
+                <option value=""></option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <label *ngIf="brandColorSelect.value == 'other'" for="brandColorName" class="col-2">If other?</label>
+            <input *ngIf="brandColorSelect.value == 'other'" id="brandColorName" name= "brandColorname" type="text" class="form-control col-4" [(ngModel)]="product.brandColorName" #brandColorName="ngModel">
+        
+            <label class="col-2" for="colorChildId">Color Id</label>
+            <input (change)="onColorChildChange(colorChildId.value)" #colorChildId="ngModel" id="colorChildId" name="colorChildId" type="text" class="form-control col" [class.col-4]="brandColorSelect.value == 'other'" [(ngModel)]="product.colorChildId" >        
+        </div> 
+        
+        <div class="form-group row">
+            <label  for="brandSizeSelect" class="col-2">Brand Size Name</label>
+            <select name="brandSizeSelect" id="brandSizeSelect"  #brandSizeSelect="ngModel" [(ngModel)]="brandSizeSelectName" class="form-control col">
+                <option value=""></option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <label *ngIf="brandSizeSelect.value == 'other'" for="brandSizeName" class="col-2">If other?</label>
+            <input *ngIf="brandSizeSelect.value == 'other'" id="brandSizeName" name="brandSizeName" type="text" class="form-control col-4" [(ngModel)]="product.brandSizeName" #brandSizeName="ngModel">
+
+            <label for="sizeChildId" class="col-2">Size Id</label>
+            <input (change)="onSizeChildChange(sizeChildId.value)" #sizeChildId="ngModel" id="sizeChildId" name="sizeChildId" type="text" class="form-control col" [class.col-4]="brandColorSelect.value == 'other'" [(ngModel)]="product.sizeChildId" >
+        </div>
+    </div> 
     <div class="form-group row" >
         <label class="col-2" for="frameTypeId">Frame Type</label>
-        <select class="form-control col" name="frameTypeId" id="frameTypeId" [(ngModel)]="product.frameId">
+        <select class="form-control col" name="frameTypeId" id="frameTypeId" [(ngModel)]="product.frameTypeId">
             <option value=""></option>
             <option *ngFor="let x of frameTypes" value="{{x.id}}">{{x.name}}</option>
         </select>
@@ -50,11 +82,7 @@
 
     <div>
         <h6>Color Details</h6>
-        <div class="form-group row">
-            <label for="brandColorName" class="col-2">Brand Color Name</label>
-            <input id="brandColorName" name= "brandColorname" type="text" class="form-control col" [(ngModel)]="product.brandColorName" #brandColorName="ngModel">
-        </div>
-        <div class="form-group row" >
+            <div class="form-group row" >
             <label for="frameColorId" class="col-2">Frame Color</label>
             <select class="form-control col" name="frameColorID" id="frameColorID" [(ngModel)]="product.frameColorId"> 
                 <option value=""></option>
@@ -78,11 +106,7 @@
     </div>
    
     <div>
-        <h6>Size Details</h6>
-        <div class="form-group row">
-            <label for="brandSizeName" class="col-2">Brand Size Name</label>
-            <input id="brandSizeName" name="brandSizeName" type="text" class="form-control col" [(ngModel)]="product.brandSizeName" #brandSizeName="ngModel">
-        </div>
+        <h6>Size Details</h6>       
         <div class="form-group row" >
             <label for="sizeId" class="col-2">Size</label>
             <select class="form-control col" name="sizeId" id="sizeId" [(ngModel)]="product.sizeId">
@@ -107,30 +131,7 @@
         
     </div>
 
-    <div>
-        <h6>Variation Details</h6>
-        
-        <div class="row form-group">
-                <label class="col-2" for="colorChildName">Color</label>
-                <input id="colorChildName" name="colorChildName" type="text" class="form-control col-4" [(ngModel)]="product.colorChildName" value="{{brandColorName.value}}">        
-                <label class="col-2" for="colorChildId">Id</label>
-                <select class="form-control col-4" (change)="onColorChildIdChange()" name="colorChildId" id="colorChildId" [(ngModel)]="product.colorChildId">
-                    <option value=""></option>
-                    <option *ngFor="let x of colorChildIds" value="{{x.id}}">{{x.name}}</option>
-                </select>
-        </div>
-
-        <div class="form-group row">
-            <label for="sizeChildName" class="col-2">Size</label>
-            <input id="sizeChildName" name="sizeChildName" type="text" class="form-control col-4" [(ngModel)]="product.sizeChildName" value="{{brandSizeName.value}}">
-
-            <label class="col-2" for="sizeChildId">Id</label>
-                <select class="form-control col-4" (change)="onSizeChildIdChange()" name="sizeChildId" id="sizeChildId" [(ngModel)]="product.sizeChildId">
-                    <option value=""></option>
-                    <option *ngFor="let x of sizeChildIds" value="{{x.id}}">{{x.name}}</option>
-                </select>
-        </div>
-    </div>  
+     
  
     <div>
         <h6>Material Details</h6>
@@ -157,6 +158,7 @@
         </div>
     </div>
      
-    <button class="btn btn-primary" [disabled]=f.invalid>Save</button>
+    <button *ngIf="!product.id" class="btn btn-primary" [disabled]=f.invalid>Save</button>
+    <button *ngIf="product.id" class="btn btn-primary" type="button" (click)="update()" [disabled]=f.invalid >Update</button>
     <button *ngIf="product.id" class="btn btn-danger" type="button" (click)="delete()" >Delete</button>
 </form>  
