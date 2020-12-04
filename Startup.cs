@@ -1,4 +1,5 @@
 using AutoMapper;
+using doublebattery.Core;
 using doublebattery.Mapping;
 using doublebattery.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +42,9 @@ namespace doublebattery
             });
 
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
         }

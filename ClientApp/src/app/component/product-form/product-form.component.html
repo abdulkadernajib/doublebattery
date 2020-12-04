@@ -1,5 +1,8 @@
 <h4 *ngIf="product.id">SKU: {{product.sku}}</h4>
 <h4 *ngIf="!(product.id)">Add New Product | {{product.sku }}</h4>
+<h6 *ngIf="product.id">Created On: {{ createdOn | date:'medium'}} | Last Updated On: {{ lastUpdate | date:'medium' }}</h6>
+
+
 <p>{{product|json}}</p>
 <form #f="ngForm" (ngSubmit)="submit()" >
     <div class="form-group row" >
@@ -28,18 +31,19 @@
     <div>
         <h6>Variation Details</h6>
         <div class="form-group row">
-            <label for="brandColorSelect" class="col-2">Brand Color Name</label>
-            <select name="brandColorSelect" id="brandColorSelect"  #brandColorSelect="ngModel" [(ngModel)]="brandColorSelectName" class="form-control col">
+            <label  for="brandColorSelect" class="col-2">Brand Color Name</label>
+            <select  name="brandColorSelect" id="brandColorSelect"  #brandColorSelect="ngModel" [(ngModel)]="brandColorSelectName" class="form-control col">
                 <option value=""></option>
                 <option value="other">Other</option>
             </select>
         </div>
         <div class="form-group row">
-            <label *ngIf="brandColorSelect.value == 'other'" for="brandColorName" class="col-2">If other?</label>
-            <input *ngIf="brandColorSelect.value == 'other'" id="brandColorName" name= "brandColorname" type="text" class="form-control col-4" [(ngModel)]="product.brandColorName" #brandColorName="ngModel">
+            <label *ngIf="brandColorSelect.value == 'other' " for="brandColorName" class="col-2">If other?</label>
+            <label *ngIf="product.id" for="brandColorName" class="col-2">Brand Color Name</label>
+            <input *ngIf="brandColorSelect.value == 'other' || product.id" [disabled]="product.id" id="brandColorName" name= "brandColorname" type="text" class="form-control col-4" [(ngModel)]="product.brandColorName" #brandColorName="ngModel">
         
             <label class="col-2" for="colorChildId">Color Id</label>
-            <input (change)="onColorChildChange(colorChildId.value)" #colorChildId="ngModel" id="colorChildId" name="colorChildId" type="text" class="form-control col" [class.col-4]="brandColorSelect.value == 'other'" [(ngModel)]="product.colorChildId" >        
+            <input (change)="onColorChildChange(colorChildId.value)" [disabled]="product.id" #colorChildId="ngModel" id="colorChildId" name="colorChildId" type="text" class="form-control col" [class.col-4]="brandColorSelect.value == 'other'" [(ngModel)]="product.colorChildId" >        
         </div> 
         
         <div class="form-group row">
@@ -50,11 +54,12 @@
             </select>
         </div>
         <div class="form-group row">
-            <label *ngIf="brandSizeSelect.value == 'other'" for="brandSizeName" class="col-2">If other?</label>
-            <input *ngIf="brandSizeSelect.value == 'other'" id="brandSizeName" name="brandSizeName" type="text" class="form-control col-4" [(ngModel)]="product.brandSizeName" #brandSizeName="ngModel">
+            <label *ngIf="brandSizeSelect.value == 'other' " for="brandSizeName" class="col-2">If other?</label>
+            <label *ngIf="product.id" for="brandSizeName" class="col-2">Brand Size Name</label>
+            <input *ngIf="brandSizeSelect.value == 'other' || product.id" [disabled]="product.id" id="brandSizeName" name="brandSizeName" type="text" class="form-control col-4" [(ngModel)]="product.brandSizeName" #brandSizeName="ngModel">
 
             <label for="sizeChildId" class="col-2">Size Id</label>
-            <input (change)="onSizeChildChange(sizeChildId.value)" #sizeChildId="ngModel" id="sizeChildId" name="sizeChildId" type="text" class="form-control col" [class.col-4]="brandColorSelect.value == 'other'" [(ngModel)]="product.sizeChildId" >
+            <input (change)="onSizeChildChange(sizeChildId.value)" [disabled]="product.id" #sizeChildId="ngModel" id="sizeChildId" name="sizeChildId" type="text" class="form-control col" [class.col-4]="brandColorSelect.value == 'other'" [(ngModel)]="product.sizeChildId" >
         </div>
     </div> 
     <div class="form-group row" >

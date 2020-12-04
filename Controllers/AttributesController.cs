@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using doublebattery.Core;
 using doublebattery.Models;
 using doublebattery.Persistence;
 using Microsoft.AspNetCore.Mvc;

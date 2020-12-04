@@ -46,6 +46,8 @@ export class ProductFormComponent implements OnInit {
   br: string;
   md: string;
   colorChild: any;
+  createdOn: string;
+  lastUpdate: string;
 
 
   constructor(private brandService: BrandService, private productService: ProductsService,
@@ -127,6 +129,8 @@ export class ProductFormComponent implements OnInit {
     this.product.templeLength = v.templeLength;
     this.product.colorChildId = v.colorChildId;
     this.product.sizeChildId = v.sizeChildId;
+    this.createdOn = v.createdOn;
+    this.lastUpdate = v.lastUpdate;
   }
 
   // private getBrand() {

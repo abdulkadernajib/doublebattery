@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using doublebattery.Core;
+using doublebattery.Core.Models;
 using doublebattery.Models;
 using doublebattery.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace doublebattery.Controllers.Resources
 {
@@ -12,11 +14,16 @@ namespace doublebattery.Controllers.Resources
     public class ProductsController : Controller
     {
         private readonly IMapper mapper;
-        private readonly DoubleBatteryDbContext context;
+        private readonly IProductRepository repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ProductsController(IMapper mapper, DoubleBatteryDbContext context)
+        public ProductsController(
+            IMapper mapper,
+            IProductRepository repository,
+            IUnitOfWork unitOfWork)
         {
-            this.context = context;
+            this.unitOfWork = unitOfWork;
+            this.repository = repository;
             this.mapper = mapper;
         }
         [HttpPost]
@@ -30,10 +37,13 @@ namespace doublebattery.Controllers.Resources
             product.LastUpdate = DateTime.Now;
 
 
-            context.Product.Add(product);
-            await context.SaveChangesAsync();
+            repository.Add(product);
+            await unitOfWork.CompleteAsync();
 
-            var result = mapper.Map<Product, SaveProductResource>(product);
+
+            product = await repository.GetProduct(product.Id);
+
+            var result = mapper.Map<Product, ProductsResource>(product);
             return Ok(result);
         }
 
@@ -43,48 +53,38 @@ namespace doublebattery.Controllers.Resources
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var product = await context.Product.FindAsync(id);
+            var product = await repository.GetProduct(id);
 
             if (product == null)
                 return NotFound();
             mapper.Map<SaveProductResource, Product>(productResource, product);
             product.LastUpdate = DateTime.Now;
 
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
-            var result = mapper.Map<Product, SaveProductResource>(product);
+            product = await repository.GetProduct(product.Id);
+            var result = mapper.Map<Product, ProductsResource>(product);
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = await context.Product.FindAsync(id);
+            var product = await repository.GetProduct(id, includeRelated: false);
 
             if (product == null)
                 return NotFound();
-            context.Remove(product);
-            await context.SaveChangesAsync();
+            repository.Delete(product);
+            await unitOfWork.CompleteAsync();
             return Ok();
         }
+
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            var product = await context.Product
-            .Include(p => p.Model)
-            .ThenInclude(m => m.Brand)
-            .Include(p => p.Category)
-            .Include(p => p.FrameMaterial)
-            .Include(p => p.FrameColor)
-            .Include(p => p.LensColor)
-            .Include(p => p.LensMaterial)
-            .Include(p => p.Style)
-            .Include(p => p.FrameType)
-            .Include(p => p.IdealFor)
-            .Include(p => p.Size)
-            .SingleOrDefaultAsync(p => p.Id == id);
+            var product = await repository.GetProduct(id);
 
             if (product == null)
                 return NotFound();
@@ -93,13 +93,28 @@ namespace doublebattery.Controllers.Resources
             return Ok(productResource);
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<ProductsResource>> GetProducts(FilterResource filterResource)
+        {
+            var filter = mapper.Map<FilterResource, Filter>(filterResource);
+            var product = await repository.GetProducts(filter);
+            return mapper.Map<IEnumerable<Product>, IEnumerable<ProductsResource>>(product);
+        }
+
         //  [HttpGet("{id}")]
         // public async Task<IActionResult> GetProductByModel(int id)
         // {
         // var product = await context.Product.Include(p => p.Model).ToListAsync(id)
+        // [HttpGet]
+        //     public async Task<QueryResultResource<ProductsResource>> GetVehicles(VehicleQueryResource filterResource)
+        //     {
+        //       var filter = mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
+        //       var queryResult = await repository.GetVehicles(filter);
 
+        //       return mapper.Map<QueryResult<Vehicle>, QueryResultResource<VehicleResource>>(queryResult);
+        //     }
 
 
     }
 }
-}
+

@@ -1,0 +1,23 @@
+<h4>Products</h4>
+<p>
+    <a [routerLink]="['/product/new']" routerLinkActive="router-link-active" class="btn btn-primary" ></a>
+</p>
+<div class="form-group row well">
+    <label for="brand" class="col-2"></label>
+    <select name="brand" id="brand" class="form-control col" [(ngModel)]="filter.brands" (change)="onFilterChange()" >
+        <option value=""></option>
+        <option *ngFor="let i of brands" value="{{i.id}}">{{i.name}}</option>
+    </select>
+</div>
+<table>
+        <thread>
+            <tr>
+                <th>SKU</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Brand Color</th>
+                <th>Brand Size</th>
+            </tr>
+        </thread>
+    </table>
+</div>

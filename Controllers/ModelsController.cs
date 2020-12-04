@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using doublebattery.Controllers.Resources;
+using doublebattery.Core;
 using doublebattery.Models;
 using doublebattery.Persistence;
 using Microsoft.AspNetCore.Mvc;

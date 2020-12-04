@@ -17,6 +17,9 @@ export class ProductsService {
   getProduct(id) {
     return this.httpClient.get('/api/products/' + id);
   }
+  getProducts() {
+    return this.httpClient.get('/api/products/');
+  }
 
   deleteProduct(id) {
     return this.httpClient.delete('/api/products/' + id);

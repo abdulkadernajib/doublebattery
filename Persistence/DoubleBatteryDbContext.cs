@@ -1,3 +1,4 @@
+using doublebattery.Core;
 using doublebattery.Models;
 using Microsoft.EntityFrameworkCore;
 

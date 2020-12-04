@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -12,6 +12,7 @@ import { ProductFormComponent } from './component/product-form/product-form.comp
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { BrandService } from './services/brand.service';
 import { ProductsService } from './services/products.service';
+import { ProductListComponent } from './component/product-list/product-list.component';
 
 
 @NgModule({
@@ -22,15 +23,17 @@ import { ProductsService } from './services/products.service';
     CounterComponent,
     FetchDataComponent,
     ProductFormComponent,
-    ModelFormComponent
+    ModelFormComponent,
+    ProductListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', redirectTo: 'products', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
+      { path: 'products', component: ProductListComponent },
       { path: 'products/new-model', component: ModelFormComponent },
       { path: 'products/new', component: ProductFormComponent },
       { path: 'products/:id', component: ProductFormComponent },

@@ -1,5 +1,5 @@
 using System;
-using doublebattery.Models;
+using doublebattery.Core;
 
 namespace doublebattery.Controllers.Resources
 {
