@@ -4,6 +4,10 @@ using doublebattery.Core;
 using doublebattery.Core.Models;
 using doublebattery.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System;
+using doublebattery.Extension;
 
 namespace doublebattery.Persistence
 {
@@ -36,7 +40,7 @@ namespace doublebattery.Persistence
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Product> GetProducts(Filter filter)
+        public async Task<IEnumerable<Product>> GetProducts(ProductQuery queryObject)
         {
             var query = context.Product
             .Include(p => p.Model)
@@ -53,11 +57,25 @@ namespace doublebattery.Persistence
             // .ToListAsync()
             .AsQueryable();
 
-            if (filter.BrandId.HasValue)
-                query = query.Where(v => v.Model.BrandId == filter.BrandId.Value)
+            if (queryObject.BrandId.HasValue)
+                query = query.Where(v => v.Model.BrandId == queryObject.BrandId.Value);
+
+            var ColumnsMaping = new Dictionary<string, Expression<Func<Product, object>>>()
+            {
+                ["brand"] = p => p.Model.Brand.Name,
+                ["model"] = p => p.Model.BrandModelId
+            };
+            query = query.ApplyOrdering(queryObject, ColumnsMaping);
+
+            // if (queryObject.SortBy == "brand")
+            //     query = (queryObject.IsSortAssending) ? query.OrderBy(p => p.Model.Brand.Name) : query.OrderByDescending(p => p.Model.Brand.Name);
+
 
             return await query.ToListAsync();
         }
+
+
+
 
         public void Add(Product product)
         {

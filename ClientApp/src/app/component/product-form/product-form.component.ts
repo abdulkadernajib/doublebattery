@@ -53,7 +53,7 @@ export class ProductFormComponent implements OnInit {
   constructor(private brandService: BrandService, private productService: ProductsService,
     private route: ActivatedRoute, private router: Router) {
     route.params.subscribe(p => {
-      this.product.id = p['id'];
+      this.product.id = +p['id'] || 0;
     })
   }
 

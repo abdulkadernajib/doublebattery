@@ -10,22 +10,49 @@ import { KeyValuePair } from 'src/app/model/KeyValuePair';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  products: Product[];
+  products: any[];
   brands: KeyValuePair[];
-  filter: any = {};
-  allProducts: Product[]
+  query: any = {};
+  column = [
+    { title: 'SKU', key: 'sku', isSortable: true },
+    { title: 'Brand', key: 'brand', isSortable: true },
+    { title: 'Model', key: 'model', isSortable: true },
+    { title: 'Brand Color', key: 'brandColor', isSortable: true },
+    { title: 'Brand Size', key: 'brandSize', isSortable: true },
+  ];
+  // allProducts: Product[]
 
   constructor(private productService: ProductsService, private brandService: BrandService) { }
 
   ngOnInit(): void {
     this.brandService.getBrands().subscribe((b: KeyValuePair[]) => this.brands = b)
-    this.productService.getProducts().subscribe((p: Product[]) => this.products = this.allProducts = p);
+    this.populateProducts()
   }
 
-  OnFilterChange() {
-    var product = this.allProducts;
-    if (this.filter.brandId)
-      product = product.filter(p => p.brand.id == this.filter.brandId)
+  populateProducts() {
+    this.productService.getProducts(this.query).subscribe((p: any[]) => this.products = p);
+  }
+
+  onFilterChange() {
+    this.populateProducts()
+    console.log(this.query)
+
+    //   var product = this.allProducts;
+    //   if (this.filter.brandId)
+    //     product = product.filter(p => p.brand.id == this.filter.brandId)
+  }
+
+  sortBy(colomnName) {
+    if (this.query.sortBy === colomnName) {
+      this.query.isSortAscending = !this.query.isSortAscending;
+    } else {
+      this.query.sortBy = colomnName;
+      this.query.isSortAscending = true;
+    }
+
+    console.log(colomnName)
+    this.populateProducts();
+
   }
 
 }

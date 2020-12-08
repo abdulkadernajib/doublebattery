@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using doublebattery.Core.Models;
 using doublebattery.Models;
@@ -10,6 +11,6 @@ namespace doublebattery.Core
 
         void Add(Product product);
         void Delete(Product product);
-        Task<Product> GetProducts(Filter filter);
+        Task<IEnumerable<Product>> GetProducts(ProductQuery query);
     }
 }

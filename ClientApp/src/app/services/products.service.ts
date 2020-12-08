@@ -17,8 +17,19 @@ export class ProductsService {
   getProduct(id) {
     return this.httpClient.get('/api/products/' + id);
   }
-  getProducts() {
-    return this.httpClient.get('/api/products/');
+  getProducts(filter) {
+    return this.httpClient.get('/api/products' + '?' + this.toQueryString(filter));
+  }
+
+  toQueryString(obj) {
+    var Parts = [];
+    for (var prop in obj)
+      var value = obj[prop];  //obj.prop
+    if (value != null && value != undefined) {
+      Parts.push(encodeURIComponent(prop) + '=' + encodeURIComponent(value));
+    }
+    return Parts.join('&');
+
   }
 
   deleteProduct(id) {

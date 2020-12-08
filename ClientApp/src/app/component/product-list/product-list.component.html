@@ -1,23 +1,32 @@
 <h4>Products</h4>
 <p>
-    <a [routerLink]="['/product/new']" routerLinkActive="router-link-active" class="btn btn-primary" ></a>
+    <a [routerLink]="['/products/new']" routerLinkActive="router-link-active" class="btn btn-primary" >Add New Product</a>
 </p>
 <div class="form-group row well">
-    <label for="brand" class="col-2"></label>
-    <select name="brand" id="brand" class="form-control col" [(ngModel)]="filter.brands" (change)="onFilterChange()" >
+    <label for="brand" class="col-2">Brand</label>
+    <select name="brand" id="brand" class="form-control col" [(ngModel)]="query.brandId" (change)="onFilterChange()" >
         <option value=""></option>
         <option *ngFor="let i of brands" value="{{i.id}}">{{i.name}}</option>
     </select>
 </div>
-<table>
-        <thread>
-            <tr>
-                <th>SKU</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Brand Color</th>
-                <th>Brand Size</th>
+<div>
+<table class="table">
+        <thead>
+            <tr >
+                <th scope="col" (click)="sortBy(c.key)" *ngFor="let c of column">{{c.title}} 
+                    <i *ngIf="query.sortBy === c.key" class="fa" [class.fa-sort-asc]="query.isSortAscending" [class.fa-sort-desc]="!query.isSortAscending"></i>
+                </th>
             </tr>
-        </thread>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of products">
+                <td>{{p.sku}}</td>
+                <td>{{p.brand.name}}</td>
+                <td>{{p.model.brandModelId}}</td>
+                <td>{{p.brandColorName}}</td>
+                <td>{{p.brandSizeName}}</td>
+            </tr>
+        </tbody>
     </table>
 </div>
+<pagination></pagination> 

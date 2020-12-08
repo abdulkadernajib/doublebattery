@@ -1,0 +1,27 @@
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation" ><a class="nav-link active" aria-selected="true" href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Attributes</a></li>
+        <li class="nav-item" role="presentation" ><a class="nav-link" aria-selected="false" href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    </ul>
+</div>
+<div class="tab-content"  >
+
+    <div class="tab-pane active" id="basic" role="tabpanel">
+        <h4>Attributes</h4>
+            <p>SKU:</p>
+            <p>Brand:</p>
+            <p>Model:</p>
+            <p>Color Name:</p>
+            <p>Size Name:</p>
+        <br>
+        <p>
+            <a [routerLink]="['/products/edit',product.id]" routerLinkActive="router-link-active" class="btn btn-primary">Edit</a>
+            <button class="btn btn-danger" (click)="delete()">Delete</button>
+        </p>
+    </div>
+    <div class="tab-pane" id="photos" role="tabpanel">
+        <h4>Photos</h4>
+    </div>
+
+
+</div>

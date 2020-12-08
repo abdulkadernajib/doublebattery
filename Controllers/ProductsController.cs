@@ -94,9 +94,9 @@ namespace doublebattery.Controllers.Resources
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProductsResource>> GetProducts(FilterResource filterResource)
+        public async Task<IEnumerable<ProductsResource>> GetProducts(ProductQueryResource filterResource)
         {
-            var filter = mapper.Map<FilterResource, Filter>(filterResource);
+            var filter = mapper.Map<ProductQueryResource, ProductQuery>(filterResource);
             var product = await repository.GetProducts(filter);
             return mapper.Map<IEnumerable<Product>, IEnumerable<ProductsResource>>(product);
         }

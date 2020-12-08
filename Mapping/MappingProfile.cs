@@ -29,7 +29,7 @@ namespace doublebattery.Mapping
 
             // API Resource -> Domain Class
             CreateMap<ModelResource, Model>();
-            CreateMap<FilterResource, Filter>();
+            CreateMap<ProductQueryResource, ProductQuery>();
             CreateMap<SaveProductResource, Product>()
             .ForMember(p => p.Id, opt => opt.Ignore());
 
