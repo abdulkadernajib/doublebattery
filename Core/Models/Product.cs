@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using doublebattery.Core.Models;
 
 namespace doublebattery.Models
 {
@@ -67,7 +70,12 @@ namespace doublebattery.Models
         public int LensHeight { get; set; }
         public int BridgeSize { get; set; }
         public int TempleLength { get; set; }
+        public ICollection<Photo> Photos { get; set; }
 
+        public Product()
+        {
+            Photos = new Collection<Photo>();
+        }
 
 
     }

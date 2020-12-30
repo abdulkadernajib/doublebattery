@@ -10,6 +10,7 @@ namespace doublebattery.Mapping
         public MappingProfile()
         {
             // Domain Class -> API Resource
+            CreateMap<Photo, PhotoResource>();
             CreateMap<Brand, BrandResource>();
             CreateMap<Model, ModelResource>();
             CreateMap<Product, SaveProductResource>();

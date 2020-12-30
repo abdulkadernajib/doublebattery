@@ -1,4 +1,5 @@
 using doublebattery.Core;
+using doublebattery.Core.Models;
 using doublebattery.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,5 +22,7 @@ namespace doublebattery.Persistence
         public DbSet<FrameType> FrameTypes { get; set; }
         public DbSet<IdealFor> IdealFor { get; set; }
         public DbSet<Size> Sizes { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+
     }
 }

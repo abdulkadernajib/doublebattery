@@ -1,27 +1,76 @@
-<div>
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item" role="presentation" ><a class="nav-link active" aria-selected="true" href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Attributes</a></li>
-        <li class="nav-item" role="presentation" ><a class="nav-link" aria-selected="false" href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+<!-- <div class="tabs">
+  <div role="tablist" aria-label="Entertainment">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="attributes-tab"
+            id="attributeTab">
+      Attribute
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="photos-tab"
+            id="photosTab"
+            tabindex="-1">
+      Photos
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="attribute-tab"
+       aria-labelledby="attributeTab">
+    <p>
+      Nils Frahm is a German musician, composer and record producer based in Berlin. He is known for combining classical and electronic music and for an unconventional approach to the piano in which he mixes a grand piano, upright piano, Roland Juno-60, Rhodes piano, drum machine, and Moog Taurus.
+    </p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="photos-tab"
+       aria-labelledby="photosTab"
+       hidden="">
+    <p>
+      Agnes Caroline Thaarup Obel is a Danish singer/songwriter. Her first album, Philharmonics, was released by PIAS Recordings on 4 October 2010 in Europe. Philharmonics was certified gold in June 2011 by the Belgian Entertainment Association (BEA) for sales of 10,000 Copies.
+    </p>
+  </div>
+</div> -->
+
+
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link"  [class.active]="attributeTab" (click)="onClickAttributeTab()" aria-controls="attributeTab" aria-selected="true" role="tab" data-bs-toggle="tab">Attribute</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" [class.active]="photosTab" (click)="onClickPhotoTab()" aria-controls="photosTab" aria-selected="false" role="tab" data-bs-toggle="tab">Photo</a>
+  </li>
+</ul>
+<div class="tab-content" *ngIf="product">  
+  <div role="tabpanel" class="tab-pane fade show" [class.active]="attributeTab" id="attributeTab" aria-labelledby="attribute-tab">
+    <h4>Attributes</h4>
+    <ul>
+
+      <li>SKU: {{product.sku}}</li>
+      <li>Brand: {{product.brand.name}}</li>
+      <li>Model: {{product.model.brandModelId}}</li>
+      <li>Color Name: {{product.brandColorName}}</li>
+      <li>Size Name: {{product.brandSizeName}}</li>
+      <li>Created on: {{product.createdOn | date:'medium'}}</li>
+      <li>Last Updated on: {{product.lastUpdate | date:'medium'}}</li>
     </ul>
-</div>
-<div class="tab-content"  >
-
-    <div class="tab-pane active" id="basic" role="tabpanel">
-        <h4>Attributes</h4>
-            <p>SKU:</p>
-            <p>Brand:</p>
-            <p>Model:</p>
-            <p>Color Name:</p>
-            <p>Size Name:</p>
-        <br>
-        <p>
-            <a [routerLink]="['/products/edit',product.id]" routerLinkActive="router-link-active" class="btn btn-primary">Edit</a>
-            <button class="btn btn-danger" (click)="delete()">Delete</button>
-        </p>
-    </div>
-    <div class="tab-pane" id="photos" role="tabpanel">
-        <h4>Photos</h4>
-    </div>
-
-
+    
+    <br>
+    <p>
+        <a [routerLink]="['/products/edit',product.id]"  routerLinkActive="router-link-active" class="btn btn-primary">Edit</a>
+        <button class="btn btn-danger" (click)="delete()">Delete</button>
+    </p>
+  </div>
+  <div role="tabpanel" class="tab-pane fade show" [class.active]="photosTab" id="photosTab" aria-labelledby="photos-tab">
+    <h4>Photos</h4>
+    <input type="file" name="" id="" (change)="uploadPhoto()" #fileInput>
+    <!-- <img *ngFor="let photo of photos" src="/uploads/{{photo.fileName}}" class="img-thumbnail"> -->
+<!-- <div class="progress">
+ <div class="progress-bar" [style.width]="">
+   <span class="sr-only"></span>
+</div> -->
+<!-- </div> -->
+  </div>
 </div>
